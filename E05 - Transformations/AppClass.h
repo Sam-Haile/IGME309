@@ -22,8 +22,21 @@ class Application
 {
 	uint m_uMeshCount = 46;
 	std::vector<MyMesh*> m_pMeshList;
+
+	char arr2D[8][11] = 
+	{
+		{'o', 'o', 'x', 'o', 'o', 'o', 'o', 'o', 'x', 'o', 'o'},
+		{'o', 'o', 'o', 'x', 'o', 'o', 'o', 'x', 'o', 'o', 'o'},
+		{'o', 'o', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'o', 'o'},
+		{'o', 'x', 'x', 'o', 'x', 'x', 'x', 'o', 'x', 'x', 'o'},
+		{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'},
+		{'x', 'o', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'o', 'x'},
+		{'x', 'o', 'x', 'o', 'o', 'o', 'o', 'o', 'x', 'o', 'x'},
+		{'o', 'o', 'o', 'x', 'x', 'o', 'x', 'x', 'o', 'o', 'o'},
+	};
+
 private:
-	String m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
+	String m_sProgrammer = "Sam Haile - sdh5898@rit.edu";
 	static ImGuiObject gui; //GUI object
 
 	uint m_uRenderCallCount = 0; //count of render calls per frame

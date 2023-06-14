@@ -13,10 +13,10 @@ void Application::InitVariables(void)
 	{
 		MyMesh* mesh = new MyMesh();
 		m_pMeshList.push_back(mesh);
-	}
-	m_pMesh->GenerateCube(1.0f, C_BLACK);
-		
+		m_pMeshList[i]->GenerateCube(1.0f, C_BLACK);
+	}		
 }
+
 void Application::Update(void)
 {
 	//Update the system so it knows how much time has passed since the last call
@@ -33,17 +33,44 @@ void Application::Update(void)
 
 	//Add objects to render list
 	m_pEntityMngr->AddEntityToRenderList(-1, true);
+
 }
 void Application::Display(void)
 {
 	// Clear the screen
 	ClearScreen();
 
-	//Calculate the model, view and projection matrix
+	static float timer = 0;
+	static uint uClock = m_pSystem->GenClock(); 
+	timer += static_cast<float>(m_pSystem->GetDeltaTime(uClock));
+
 	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
 	matrix4 m4View = m_pCameraMngr->GetViewMatrix();
+	static float horizontal = -10.0f;
+	static vector3 v3Position(horizontal, 0.0f, 0.0f);
 
-	m_pMesh->Render(m4Projection, m4View, ToMatrix4(m_qArcBall));
+	v3Position.x = horizontal + timer * 4.0f;
+	v3Position.y = 0;
+	matrix4 m4Position = glm::translate(vector3(-5.0f, -3.0f, -15.0f)) * glm::translate(v3Position);
+
+	int cubeIndex = 0;
+	float xPosition = 0;
+	float yPosition = 0;
+
+	// Accessing the elements of the 2D array
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 11; j++) 
+		{
+			if (arr2D[i][j] == 'x')
+			{
+				m_pMeshList[cubeIndex]->Render(m4Projection, m4View, glm::translate(m4Position, vector3(xPosition, yPosition, 0.0f)));
+				cubeIndex++;
+			}
+			xPosition++;
+		}
+		xPosition = 0;
+		yPosition--;
+	}
 
 	// draw a skybox
 	m_pModelMngr->AddSkyboxToRenderList();
@@ -63,7 +90,7 @@ void Application::Display(void)
 void Application::Release(void)
 {
 	//Release meshes
-	SafeDelete(m_pMesh);
+	//SafeDelete(m_pMesh);
 
 	//release GUI
 	ShutdownGUI();
