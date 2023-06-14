@@ -20,8 +20,8 @@ using namespace BTX;
 
 class Application
 {
-	uint m_uMeshCount = 10;
-	MyMesh* m_pMesh;
+	uint m_uMeshCount = 46;
+	std::vector<MyMesh*> m_pMeshList;
 private:
 	String m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
 	static ImGuiObject gui; //GUI object

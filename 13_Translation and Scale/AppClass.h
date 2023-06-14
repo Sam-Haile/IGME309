@@ -20,8 +20,9 @@ using namespace BTX;
 
 class Application
 {
-	MyMesh* m_pMesh1 = nullptr;
-	MyMesh* m_pMesh2 = nullptr;
+	int numOfMeshes = 46;
+
+	MyMesh* m_pMesh = nullptr;
 private:
 	String m_sProgrammer = "Sam Haile - sdh5898@rit.edu";
 	static ImGuiObject gui; //GUI object

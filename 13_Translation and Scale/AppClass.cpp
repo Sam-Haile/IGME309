@@ -2,20 +2,17 @@
 void Application::InitVariables(void)
 {
 	////Change this to your name and email
-	m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
+	m_sProgrammer = "Sam Haile - sdh5898@rit.edu";
 	vector3 v3Position(0.0f, 0.0f, 10.0f);
 	vector3 v3Target = ZERO_V3;
 	vector3 v3Upward = AXIS_Y;
 	m_pCameraMngr->SetPositionTargetAndUpward(v3Position, v3Target, v3Upward);
 
-	//Allocate the memory for the Meshes
-	for (int i = 0; i < m_uMeshCount; i++)
-	{
-		MyMesh* mesh = new MyMesh();
-		m_pMeshList.push_back(mesh);
-	}
-	m_pMesh->GenerateCube(1.0f, C_BLACK);
-		
+	//init the mesh
+	m_pMesh = new MyMesh();
+	m_pMesh->GenerateCube(1.0f, C_WHITE);
+	char arr[] = { 'x', 'o', 'x' };
+
 }
 void Application::Update(void)
 {
@@ -39,11 +36,17 @@ void Application::Display(void)
 	// Clear the screen
 	ClearScreen();
 
-	//Calculate the model, view and projection matrix
-	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
-	matrix4 m4View = m_pCameraMngr->GetViewMatrix();
 
-	m_pMesh->Render(m4Projection, m4View, ToMatrix4(m_qArcBall));
+	matrix4 m4View = m_pCameraMngr->GetViewMatrix();
+	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
+	
+	matrix4 m4Scale = glm::scale(IDENTITY_M4, vector3(2.0f, 2.0f, 2.0f)) ;
+	matrix4 m4Translate = glm::translate(IDENTITY_M4, vector3(1.0f, 0, 0));
+	matrix4 m4Model = m4Translate;
+
+	m_pMesh->Render(m4Projection, m4View, m4Model);
+
+
 
 	// draw a skybox
 	m_pModelMngr->AddSkyboxToRenderList();
@@ -62,9 +65,8 @@ void Application::Display(void)
 }
 void Application::Release(void)
 {
-	//Release meshes
-	SafeDelete(m_pMesh);
 
+	SafeDelete(m_pMesh);
 	//release GUI
 	ShutdownGUI();
 }
