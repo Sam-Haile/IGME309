@@ -7,6 +7,7 @@ void Application::InitVariables(void)
 	vector3 v3Target = ZERO_V3;
 	vector3 v3Upward = AXIS_Y;
 	m_pCameraMngr->SetPositionTargetAndUpward(v3Position, v3Target, v3Upward);
+	
 }
 void Application::Update(void)
 {

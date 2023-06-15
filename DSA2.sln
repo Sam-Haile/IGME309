@@ -110,6 +110,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E07s - Gimbal Removal", "E0
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "13_Translation and Scale", "13_Translation and Scale\13_Translation and Scale.vcxproj", "{AEC5F2AF-AE9A-467E-B2F6-2669FD1286EF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E06.5_LERP", "E06.5_LERP\E06.5_LERP.vcxproj", "{BA077569-7DD7-44B7-B08D-7A071F892755}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -284,6 +286,10 @@ Global
 		{AEC5F2AF-AE9A-467E-B2F6-2669FD1286EF}.Debug|x86.Build.0 = Debug|Win32
 		{AEC5F2AF-AE9A-467E-B2F6-2669FD1286EF}.Release|x86.ActiveCfg = Release|Win32
 		{AEC5F2AF-AE9A-467E-B2F6-2669FD1286EF}.Release|x86.Build.0 = Release|Win32
+		{BA077569-7DD7-44B7-B08D-7A071F892755}.Debug|x86.ActiveCfg = Debug|Win32
+		{BA077569-7DD7-44B7-B08D-7A071F892755}.Debug|x86.Build.0 = Debug|Win32
+		{BA077569-7DD7-44B7-B08D-7A071F892755}.Release|x86.ActiveCfg = Release|Win32
+		{BA077569-7DD7-44B7-B08D-7A071F892755}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -331,6 +337,7 @@ Global
 		{844D5FBC-A0E8-446D-AF24-7B6FAD8FD713} = {1B431B5C-2C15-4F4D-9452-CF92F054A1ED}
 		{28A015F4-C167-45B7-A8C7-A283FD1B2D98} = {86AAB188-8116-48FF-8BEF-CAB54B4AB43F}
 		{AEC5F2AF-AE9A-467E-B2F6-2669FD1286EF} = {1B431B5C-2C15-4F4D-9452-CF92F054A1ED}
+		{BA077569-7DD7-44B7-B08D-7A071F892755} = {86AAB188-8116-48FF-8BEF-CAB54B4AB43F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1308D28-F0EE-436B-AA0D-4CFD1105C92A}

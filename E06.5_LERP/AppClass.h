@@ -14,12 +14,16 @@ Update: 2021/02
 
 #include "imgui\ImGuiObject.h"
 
-using namespace BTX;
 #include "MyMesh.h"
+
+using namespace BTX;
 
 class Application
 {
 	MyMesh* m_pMesh = nullptr;
+	std::vector<vector3> m_points;
+	vector3 m_StartingPos;
+	int m_index;
 private:
 	String m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
 	static ImGuiObject gui; //GUI object

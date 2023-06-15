@@ -21,6 +21,8 @@ using namespace BTX;
 class Application
 {
 	MyMesh* m_pMesh = nullptr;
+	std::vector<MyMesh*> m_pMeshList;
+
 private:
 	String m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
 	static ImGuiObject gui; //GUI object
