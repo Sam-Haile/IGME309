@@ -2,7 +2,7 @@
 void Application::InitVariables(void)
 {
 	//Change this to your name and email
-	m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
+	m_sProgrammer = "Sam Haile - sdh5898@rit.edu";
 
 	//Set the position and target of the camera
 	//(I'm at [0,0,10], looking at [0,0,0] and up is the positive Y axis)
@@ -14,13 +14,13 @@ void Application::InitVariables(void)
 	m_pCone = new MyMesh();
 	m_pCone->GenerateCone(0.5f, 1.0f, 7, C_ORANGE);
 	m_pCylinder = new MyMesh();
-	m_pCylinder->GenerateCylinder(0.5f, 1.0f, 7, C_YELLOW);
+	m_pCylinder->GenerateCylinder(0.5f, 1.0f, 10, C_YELLOW);
 	m_pTube = new MyMesh();
 	m_pTube->GenerateTube(0.5f, 0.35f, 1.0f, 7, C_GREEN);
 	m_pSphere = new MyMesh();
 	m_pSphere->GenerateSphere(0.5f, 3, C_BLUE);
 	m_pTorus = new MyMesh();
-	m_pTorus->GenerateTorus(0.5f, 0.30f, 7, 7, C_VIOLET);
+	m_pTorus->GenerateTorus(0.5f, .30f, 7, 7, C_VIOLET);
 
 	//Make Mesh object
 	m_pMesh = new MyMesh();
@@ -34,7 +34,7 @@ void Application::InitVariables(void)
 		m_pMesh->GenerateCone(1.0f, 2.0f, 10, C_CYAN);
 		break;
 	case 2:
-		m_pMesh->GenerateCylinder(1.0f, 2.0f, 10, C_CYAN);
+		m_pMesh->GenerateCylinder(1.0f, 2.0f, 15, C_CYAN);
 		break;
 	case 3:
 		m_pMesh->GenerateTube(1.0f, 0.7f, 1.0f, 10, C_CYAN);
@@ -99,6 +99,10 @@ void Application::Display(void)
 	v3Position = vector3(glm::sin(glm::radians(dAngle * 5)) * 3.0f, glm::cos(glm::radians(dAngle * 5)) * 3.0f, 0.0f);
 	m_pTorus->Render(m4Projection, m4View, glm::rotate(glm::translate(v3Position), glm::radians(static_cast<float>(dTimer) * 20.0f), AXIS_X));
 
+
+	// draw stops to know we are within stops
+	//m_pModelMngr->AddSphereToRenderList(glm::translate(v3Position) * glm::scale(vector3(.5)), C_RED, RENDER_WIRE);
+	
 	// draw a skybox
 	m_pModelMngr->AddSkyboxToRenderList();
 	

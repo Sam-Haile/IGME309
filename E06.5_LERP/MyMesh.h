@@ -14,6 +14,7 @@ class MyMesh
 	uint m_uVertexCount = 0;	//Number of vertices in this MyMesh
 	GLuint m_VAO = 0;			//OpenGL Vertex Array Object
 	GLuint m_VBO = 0;			//OpenGL Vertex Array Object
+	vector3 m_Point;
 
 	std::vector<vector3> m_lVertex;		//Composed vertex array
 	std::vector<vector3> m_lVertexPos;	//List of Vertices

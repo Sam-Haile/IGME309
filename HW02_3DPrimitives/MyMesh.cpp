@@ -1,6 +1,7 @@
 #include "MyMesh.h"
 void MyMesh::GenerateCube(float a_fSize, vector3 a_v3Color)
 {
+	// if the requested size is too small
 	if (a_fSize < 0.01f)
 		a_fSize = 0.01f;
 
@@ -57,12 +58,42 @@ void MyMesh::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivisions,
 	if (a_nSubdivisions > 360)
 		a_nSubdivisions = 360;
 
+	// Calculate the angle increment for each subdivision on the cone
+	float angleIncrement = 360.0f / a_nSubdivisions;
+
 	Release();
 	Init();
 
-	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
-	// -------------------------------
+	// Get half the cone's height
+	float halfHeight = a_fHeight / 2.0f;
+
+	// Store positions of the cone's base vertices
+	std::vector<vector3> baseVertices;
+	float theta = 0.0f; // used to calculate the angle for each vertex
+	float delta = static_cast<GLfloat>(2.0 * PI / static_cast<float>(a_nSubdivisions)); // calculates the angular difference between each vertex on the base of the cone
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		// Calculate position of vertices on the base of the cone
+		vector3 baseVertex(cos(theta) * a_fRadius, sin(theta) * a_fRadius, -halfHeight);
+		theta += delta;
+		baseVertices.push_back(baseVertex);
+	}
+
+	// Sides of the cone
+	vector3 apex(0.0f, 0.0f, halfHeight); // apex of the cone
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		int nextIndex = (i + 1) % a_nSubdivisions;
+		AddTri(baseVertices[i], baseVertices[nextIndex], apex);
+	}
+
+	// Bottom of the cone
+	vector3 center(0.0f, 0.0f, -halfHeight); // center of the bottom
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		int nextIndex = (i + 1) % a_nSubdivisions;
+		AddTri(baseVertices[nextIndex], baseVertices[i], center);
+	}
 
 	// Adding information about color
 	CompleteMesh(a_v3Color);
@@ -84,9 +115,48 @@ void MyMesh::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubdivisi
 	Release();
 	Init();
 
-	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
-	// -------------------------------
+	// Calculate the angle increment for each subdivision on the cylinder
+	float angleIncrement = 360.0f / a_nSubdivisions;
+
+	// Get half the cylinder's height
+	float halfHeight = a_fHeight / 2.0f;
+
+	// Store positions of the cylinder's vertices
+	std::vector<vector3> topVertices;
+	std::vector<vector3> bottomVertices;
+	float theta = 0.0f; // used to calculate the angle for each vertex
+	float delta = static_cast<float>(2.0 * PI / static_cast<float>(a_nSubdivisions)); // calculates the angular difference between each vertex on the base of the cylinder
+	
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		// Calculate position of vertices on the top and bottom bases of the cylinder
+		vector3 topVertex(cos(theta) * a_fRadius, sin(theta) * a_fRadius, halfHeight);
+		vector3 bottomVertex(cos(theta) * a_fRadius, sin(theta) * a_fRadius, -halfHeight);
+		theta += delta;
+		topVertices.push_back(topVertex);
+		bottomVertices.push_back(bottomVertex);
+	}
+
+	// Generate the sides of the cylinder
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		int nextIndex = (i + 1) % a_nSubdivisions;
+		AddQuad(topVertices[i], topVertices[nextIndex], bottomVertices[nextIndex], bottomVertices[i]);
+	}
+
+	// Generate the top base of the cylinder
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		int nextIndex = (i + 1) % a_nSubdivisions;
+		AddTri(topVertices[i], topVertices[nextIndex], vector3(0.0f, 0.0f, halfHeight));
+	}
+
+	// Generate the bottom base of the cylinder
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		int nextIndex = (i + 1) % a_nSubdivisions;
+		AddTri(bottomVertices[i], vector3(0.0f, 0.0f, -halfHeight), bottomVertices[nextIndex]);
+	}
 
 	// Adding information about color
 	CompleteMesh(a_v3Color);
@@ -114,9 +184,56 @@ void MyMesh::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float a_fH
 	Release();
 	Init();
 
-	// Replace this with your code
-	GenerateCube(a_fOuterRadius * 2.0f, a_v3Color);
-	// -------------------------------
+	// Calculate the angle increment for each subdivision on the cylinder
+	float angleIncrement = 360.0f / a_nSubdivisions;
+
+	// Get half the cylinder's height
+	float halfHeight = a_fHeight / 2.0f;
+
+	// Store positions of the cylinder's vertices
+	std::vector<vector3> outerTVertices;
+	std::vector<vector3> outerBVertices;
+	std::vector<vector3> innerTVertices;
+	std::vector<vector3> innerBVertices;
+	GLfloat theta = 0.0f; // used to calculate the angle for each vertex
+	GLfloat delta = static_cast<GLfloat>(2.0 * PI / static_cast<GLfloat>(a_nSubdivisions)); // calculates the angular difference between each vertex on the base of the cylinder
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		// Calculate position of vertices on the outer and inner surfaces of the cylinder
+		vector3 outerTopVertex(cos(theta) * a_fOuterRadius, sin(theta) * a_fOuterRadius, halfHeight);
+		vector3 outerBottomVertex(cos(theta) * a_fOuterRadius, sin(theta) * a_fOuterRadius, -halfHeight);
+		vector3 innerTopVertex(cos(theta) * a_fInnerRadius, sin(theta) * a_fInnerRadius, halfHeight);
+		vector3 innerBottomVertex(cos(theta) * a_fInnerRadius, sin(theta) * a_fInnerRadius, -halfHeight);
+		theta += delta;
+		outerTVertices.push_back(outerTopVertex);
+		outerBVertices.push_back(outerBottomVertex);
+		innerTVertices.push_back(innerTopVertex);
+		innerBVertices.push_back(innerBottomVertex);
+	}
+
+	// Generate the sides of the cylinder
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		int nextIndex = (i + 1) % a_nSubdivisions;
+		AddQuad(outerTVertices[i], outerTVertices[nextIndex], outerBVertices[nextIndex], outerBVertices[i]);
+		AddQuad(innerTVertices[nextIndex], innerTVertices[i], innerBVertices[i], innerBVertices[nextIndex]);
+		AddQuad(innerTVertices[i], innerTVertices[nextIndex], outerTVertices[nextIndex], outerTVertices[i]);
+		AddQuad(outerBVertices[nextIndex], outerBVertices[i], innerBVertices[i], innerBVertices[nextIndex]);
+	}
+
+	// Generate the top base of the cylinder
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		int nextIndex = (i + 1) % a_nSubdivisions;
+		AddQuad(outerTVertices[i], outerTVertices[nextIndex], innerTVertices[nextIndex], innerTVertices[i]);
+	}
+
+	// Generate the bottom base of the cylinder
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		int nextIndex = (i + 1) % a_nSubdivisions;
+		AddQuad(innerBVertices[i], innerBVertices[nextIndex], outerBVertices[nextIndex], outerBVertices[i]);
+	}
 
 	// Adding information about color
 	CompleteMesh(a_v3Color);
@@ -146,9 +263,49 @@ void MyMesh::GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int a_nSu
 	Release();
 	Init();
 
-	// Replace this with your code
-	GenerateCube(a_fOuterRadius * 2.0f, a_v3Color);
-	// -------------------------------
+	// Calculate angle increments
+	float angleIncrementA = 360.0f / static_cast<float>(a_nSubdivisionsA);
+	float angleIncrementB = 360.0f / static_cast<float>(a_nSubdivisionsB);
+
+	// Generate torus vertices
+	for (int i = 0; i < a_nSubdivisionsA; ++i)
+	{
+		float angleA = i * angleIncrementA;
+
+		for (int j = 0; j < a_nSubdivisionsB; ++j)
+		{
+			float angleB = j * angleIncrementB;
+
+			// Calculate vertex positions
+			vector3 vertex1, vertex2, vertex3, vertex4;
+			vertex1.x = (a_fOuterRadius + a_fInnerRadius * cos(glm::radians(angleB))) * cos(glm::radians(angleA));
+			vertex1.y = (a_fOuterRadius + a_fInnerRadius * cos(glm::radians(angleB))) * sin(glm::radians(angleA));
+			vertex1.z = a_fInnerRadius * sin(glm::radians(angleB));
+
+			vertex2.x = (a_fOuterRadius + a_fInnerRadius * cos(glm::radians(angleB + angleIncrementB))) * cos(glm::radians(angleA));
+			vertex2.y = (a_fOuterRadius + a_fInnerRadius * cos(glm::radians(angleB + angleIncrementB))) * sin(glm::radians(angleA));
+			vertex2.z = a_fInnerRadius * sin(glm::radians(angleB + angleIncrementB));
+
+			vertex3.x = (a_fOuterRadius + a_fInnerRadius * cos(glm::radians(angleB))) * cos(glm::radians(angleA + angleIncrementA));
+			vertex3.y = (a_fOuterRadius + a_fInnerRadius * cos(glm::radians(angleB))) * sin(glm::radians(angleA + angleIncrementA));
+			vertex3.z = a_fInnerRadius * sin(glm::radians(angleB));
+
+			vertex4.x = (a_fOuterRadius + a_fInnerRadius * cos(glm::radians(angleB + angleIncrementB))) * cos(glm::radians(angleA + angleIncrementA));
+			vertex4.y = (a_fOuterRadius + a_fInnerRadius * cos(glm::radians(angleB + angleIncrementB))) * sin(glm::radians(angleA + angleIncrementA));
+			vertex4.z = a_fInnerRadius * sin(glm::radians(angleB + angleIncrementB));
+
+			// Add triangles or quads based on the subdivision count
+			if (a_nSubdivisionsB == 3)
+			{
+				AddTri(vertex1, vertex2, vertex3);
+				AddTri(vertex3, vertex2, vertex4);
+			}
+			else
+			{
+				AddQuad(vertex1, vertex2, vertex3, vertex4);
+			}
+		}
+	}
 
 	// Adding information about color
 	CompleteMesh(a_v3Color);
@@ -159,7 +316,7 @@ void MyMesh::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Co
 	if (a_fRadius < 0.01f)
 		a_fRadius = 0.01f;
 
-	//Sets minimum and maximum of subdivisions
+	// Sets minimum and maximum of subdivisions
 	if (a_nSubdivisions < 1)
 	{
 		GenerateCube(a_fRadius * 2.0f, a_v3Color);
@@ -171,9 +328,40 @@ void MyMesh::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Co
 	Release();
 	Init();
 
-	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
-	// -------------------------------
+	float fDeltaPhi = glm::pi<float>() / static_cast<float>(a_nSubdivisions);
+	float fDeltaTheta = glm::two_pi<float>() / static_cast<float>(a_nSubdivisions);
+
+	// Generate vertices
+	std::vector<vector3> vertices;
+	for (int i = 0; i <= a_nSubdivisions; i++)
+	{
+		float fPhi = i * fDeltaPhi;
+
+		for (int j = 0; j <= a_nSubdivisions; j++)
+		{
+			float fTheta = j * fDeltaTheta;
+
+			float x = a_fRadius * sin(fPhi) * cos(fTheta);
+			float y = a_fRadius * sin(fPhi) * sin(fTheta);
+			float z = a_fRadius * cos(fPhi);
+
+			vertices.push_back(vector3(x, y, z));
+		}
+	}
+
+	// Generate triangles
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		for (int j = 0; j < a_nSubdivisions; j++)
+		{
+			int i0 = i * (a_nSubdivisions + 1) + j;
+			int i1 = i0 + 1;
+			int i2 = (i + 1) * (a_nSubdivisions + 1) + j;
+			int i3 = i2 + 1;
+
+			AddQuad(vertices[i0], vertices[i1], vertices[i2], vertices[i3]);
+		}
+	}
 
 	// Adding information about color
 	CompleteMesh(a_v3Color);
