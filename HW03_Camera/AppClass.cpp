@@ -2,7 +2,7 @@
 void Application::InitVariables(void)
 {
 	////Change this to your name and email
-	m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
+	m_sProgrammer = "Sam Haile - sdh5898@rit.edu";
 	vector3 v3Position(0.0f, 15.0f, 25.0f);
 	vector3 v3Target = ZERO_V3;
 	vector3 v3Upward = AXIS_Y;
